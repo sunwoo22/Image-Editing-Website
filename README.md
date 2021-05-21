@@ -20,36 +20,45 @@ JSP를 통해 웹 브라우저와 서버, DB를 연결한 동적 웹페이지에
 ## 💻 화면 구성
 💨 **main.jsp**: 로그인 전 메인 화면   
 <br>
-
+<img src="https://user-images.githubusercontent.com/84164109/119072215-17750280-ba26-11eb-9c9e-2bbdd6096982.png">
 <br><br>
-💨 **join.jsp**: 회원가입   
+💨 **join-client.jsp**: 회원가입   
 <br>
-
+<img src="https://user-images.githubusercontent.com/84164109/119072234-1d6ae380-ba26-11eb-8b0f-cbb546b27d4e.png">
 <br><br>
-💨 **login.jsp**: 로그인   
+💨 **login-client.jsp**: 로그인   
 <br>
-
+<img src="https://user-images.githubusercontent.com/84164109/119072230-1c39b680-ba26-11eb-907e-6cbf03dcc9df.png">
 <br><br>
-💨 **main.jsp**: 로그인 후 메인 화면   
+💨 **main-login.jsp**: 로그인 후 메인 화면(이미지 선택)   
 <br>
-
+<img src="https://user-images.githubusercontent.com/84164109/119072289-307db380-ba26-11eb-8325-65ef0f2bc9c1.png">
 <br><br>
 💨 **photo-edit.jsp**: 이미지 편집 및 저장   
 <br>
-
+<img src="https://user-images.githubusercontent.com/84164109/119072238-1e9c1080-ba26-11eb-92df-97f5d971deed.png">
 <br><br>
 💨 **mypage.jsp**: 마이페이지(저장한 이미지 보기)   
 <br>
-
+<img src="https://user-images.githubusercontent.com/84164109/119072260-278ce200-ba26-11eb-9bf7-4ac5e8a20d8b.png">
 <br><br>
-💨 **changepw.jsp**: 비밀번호 변경   
+💨 **changepw-client.jsp**: 비밀번호 변경   
 <br>
-
+<img src="https://user-images.githubusercontent.com/84164109/119072259-265bb500-ba26-11eb-93bd-2f199c60f4b4.png">
 <br><br>
-💨 **withdrawal.jsp**: 회원탈퇴   
+💨 **withdrawal-client.jsp**: 회원탈퇴   
 <br>
-
+<img src="https://user-images.githubusercontent.com/84164109/119072313-3a071b80-ba26-11eb-9fc5-2aa7ceb55bc6.png">
 <br><br>
+
+## 💾 서버 구성
+💨 **join-server.jsp**: 회원가입(아이디중복확인)   
+💨 **join-server2.jsp**: 회원가입   
+💨 **login-server.jsp**: 로그인   
+💨 **changepw-server.jsp**: 비밀번호 변경   
+💨 **withdrawal-server.jsp**: 회원탈퇴   
+💨 **photo-save.jsp**: 이미지 저장   
+<br>
    
 ## 🎬 시연 영상
 > https://youtu.be/gYLwj4hH6UE
