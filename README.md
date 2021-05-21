@@ -93,7 +93,7 @@ MariaDB [project_db]> create table user(
                      image_num int(2) default 0
                      );
 ```
-✔ **회원가입시 DB에 정보 **
+✔ **회원가입시 DB에 정보**
 ```JSP
 <!-- DB와 연결 -->
 <%@ include file="dbconnect.jsp"%>
