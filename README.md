@@ -52,7 +52,7 @@ JSP를 통해 웹 브라우저와 서버, DB를 연결한 동적 웹페이지에
 <br><br>
 
 ## 💾 서버 구성
-💨 **join-server.jsp**: 회원가입(아이디중복확인)   
+💨 **join-server.jsp**: 회원가입(아이디 중복 확인)   
 💨 **join-server2.jsp**: 회원가입   
 💨 **login-server.jsp**: 로그인   
 💨 **changepw-server.jsp**: 비밀번호 변경   
@@ -61,216 +61,195 @@ JSP를 통해 웹 브라우저와 서버, DB를 연결한 동적 웹페이지에
 <br>
    
 ## 🎬 시연 영상
-> https://youtu.be/gYLwj4hH6UE
+> https://youtu.be/DfDwhXcBNZY
 <br>
-<img src="https://user-images.githubusercontent.com/84164109/118427766-f13f2200-b708-11eb-8231-909582527b29.png">
+<img src="https://user-images.githubusercontent.com/84164109/119073053-87d05380-ba27-11eb-9ff4-7c86ccabc28f.PNG">
 <br>
 
 ## 💦 보완할 점
-영상처리 알고리즘 관련 함수들 정리하기   
-마우스 이벤트 등등   
-함께 올린 html 파일보고 공부!!   
-<br>
-   
-## 📋 참고 자료
-2D breakout game using pure JavaScript   
-> https://developer.mozilla.org/ko/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript   
+세션 사용법을 잘 몰라서 세션 스토리지를 사용했다...   
+그래서 메인페이지가 두개가 되어버렸다.   
+회원가입시 정보 추가   
+마이페이지 이미지 가끔 오류나는 것 수정   
+(eclipse refresh 오류인 듯)   
 <br>
    
 ## 🍺 일기장
-> https://mygummy2.tistory.com/36
+> https://mygummy2.tistory.com/45
 <br>
    
 ## 💎 중요 코드
-✔ **이미지 선택하여 화면에 출력하기**
-```Java Script
-
-var inCanvas, inCtx; // 캔버스 관련 변수
-var inFile; // 입력 파일 관련 변수
-
-function drawImage() {
-  // 캔버스 생성
-  inCanvas = document.getElementById('inCanvas');
-  inCtx = inCanvas.getContext('2d');
-
-  // 이미지 지정되어 있는 경우
-  var inImage = new Image(); // 빈 이미지 객체 생성
-  inImage.src = ""; // 지정된 이미지 파일 이름
-  
-  // 이미지 파일 선택하는 경우
-  inFile = document.getElementById('selectFile').files[0]; // 이미지 파일 선택
-  var inImage = new Image(); // 빈 이미지 객체 생성
-  inImage.src = inFile.name; // 이미지 파일 이름 가져오기
-
-  // 캔버스에 이미지 띄우기
-  inImage.onload = function() {
-      // 캔버스 크기를 이미지 파일 크기로 설정
-      inCanvas.width = inImage.width;
-      inCanvas.height = inImage.height;
-      // 이미지 띄우기
-      inCtx.drawImage(inImage, 0, 0, inCanvas.width, inCanvas.height);
-  }
-}
+✔ **Maria DB 사용 및 테이블 생성**
 ```
-✔ **세션 스토리지에 값 저장 및 가져오기**
-```Java Script
-// 값 저장하기
-function selectImage() {
-   var imageNum = num;
-   sessionStorage.setItem("imageNum", imageNum); // setItem(key, value)
-}
+C:\> mysql -u root -p
+Enter pawwsord: 1234
 
-// 값 가져오기
-var imageNum2 = sessionStorage.getItem("imageNum"); // getItem(key)
+MariaDB [(none)]> create project_db;
+MariaDB [(none)]> use project_db;
+
+MariaDB [project_db]> create table user(
+                     user_id char(8) primary key,
+                     user_pw char(8) not null,
+                     image_num int(2) default 0
+                     );
 ```
-✔ **이미지 영상처리 후 출력하기**
-```Java Script
-var outCanvas, outCtx; // 캔버스 관련 변수
-var inPaper, outPaper; // 캔버스에 픽셀값 출력할 종이
-var inImageArray, outImageArray; // 픽셀값 저장할 배열
-var inWidth, inHeight, outWidth, outHeight;
-inWidth = outWidth = inCanvas.width;
-inHeight = outHeight = inCanvas.height;
+✔ **회원가입시 DB에 정보 **
+```JSP
+<!-- DB와 연결 -->
+<%@ include file="dbconnect.jsp"%>
 
-// 입,출력 3차원 배열
-inImageArray = outImageArray = new Array(3);
-for(var j=0; j<3; j++) {
-   inImageArray[j] = new Array(inHeight);
-   outImageArray[j] = new Array(outHeight);
-   for(var i=0; i<inHeight; i++) {
-      inImageArray[j][i] = new Array(inHeight);
-      outImageArray[j][i] = new Array(outHeight);
-   }
-}
+<%
+	// client에서 받아온 id, pw
+   String user_id = request.getParameter("user_id");
+	String user_pw = request.getParameter("user_pw");
+	String user_pw_ck = request.getParameter("user_pw_ck");
 
-// 이미지가 띄워진 캔버스에서 픽셀값 가져와 입력 배열에 저장
-var imageData = inCtx.getImageData(0,0,inWidth,inHeight);
-var R, G, B, A;
-for(var i=0; i<inHeight; i++) {
-   for (var k=0; k<inWidth; k++) {
-      pixel = (i*inWidth + k)*4; // 1픽셀 = 4byte
-      R = imageData.data[pixel + 0];
-      G = imageData.data[pixel + 1];
-      B = imageData.data[pixel + 2];
-      // A = imageData.data[pixel + 3];
-      inImageArray[0][i][k] = String.fromCharCode(R);
-      inImageArray[1][i][k] = String.fromCharCode(G);
-      inImageArray[2][i][k] = String.fromCharCode(B);
-   }
-}
+	// 문자열 정규식 검사
+	Pattern p = Pattern.compile("(^[a-zA-Z0-9]*$)");
+	Matcher m_id = p.matcher(user_id);
+	Matcher m_pw = p.matcher(user_pw);
 
-// 영상처리 알고리즘을 사용해 픽셀값 변경 후 출력 배열에 저장
-for(var i=0; i<inHeight; i++) {
-   for (var k=0; k<inWidth; k++) {
-   // 픽셀값 문자 -> 숫자
-   R = inImageArray[0][i][k].charCodeAt(0);
-   G = inImageArray[1][i][k].charCodeAt(0);
-   B = inImageArray[2][i][k].charCodeAt(0);
+   // sql 쿼리문 전송을 위한 statement 객체 생성
+	ResultSet rs = null;
+	Statement stmt = conn.createStatement();
+
+   // sql 쿼리문: 아이디 중복 체크
+	String sql = "SELECT user_id FROM user ";
+	sql += "WHERE user_id = '" + user_id + "';";
+
+   // 쿼리문 실행
+	rs = stmt.executeQuery(sql);
+	
+   // 회원가입 실패시 경고창 생성
+	if(user_id == "") {
+		%><script> alert("아이디를 입력해주세요."); history.go(-1); </script><%
+	} else if(!m_id.find()) {
+		%><script> alert("아이디는 영어, 숫자만 입력가능합니다."); history.go(-1); </script><%			
+	} else if(user_pw == "") {
+		%><script> alert("비밀번호를 입력해주세요."); history.go(-1); </script><%
+	} else if(user_pw_ck == "") {
+		%><script> alert("비밀번호를 다시 확인해주세요."); history.go(-1); </script><%
+	} else if(!user_pw.equals(user_pw_ck)) {
+		%><script> alert("비밀번호를 다시 확인해주세요."); history.go(-1); </script><%
+	} else if(!m_pw.find()) {
+		%><script> alert("비밀번호는 영어, 숫자만 입력가능합니다."); history.go(-1); </script><%			
+	} else if(user_id.equals(user_pw)) {
+		%><script> alert("아이디와 비밀번호가 같습니다."); history.go(-1); </script><%	
+	} else if(rs.next()) {
+		%><script> alert("아이디 중복 확인을 해주세요."); history.go(-1); </script><%
+	} 
    
-   // ** 여러가지 영상처리 적용 **
-   
-   // 픽셀값 숫자 -> 문자
-   outImageArray[0][i][k] = String.fromCharCode(R);
-   outImageArray[1][i][k] = String.fromCharCode(G);
-   outImageArray[2][i][k] = String.fromCharCode(B);
-   }
-}
+   // 회원가입 성공
+   else {
+      // sql 쿼리문: DB에 가입 정보 전달
+		sql = "INSERT INTO user VALUES (";
+		sql += "'" + user_id + "', '" + user_pw + "', 0";
+		sql += ");";
 
-// 픽셀값 출력할 종이 생성
-outPaper = outCtx.createImageData(outWidth, outHeight);
-// 종이에 픽셀값 출력
-for(var i=0; i<outHeight; i++) {
-   for(var k=0; k<outWidth; k++) {
-      R = outImageArray[0][i][k].charCodeAt(0);
-      G = outImageArray[1][i][k].charCodeAt(0);
-      B = outImageArray[2][i][k].charCodeAt(0);
-      outPaper.data[(i*outWidth + k) * 4 + 0] = R;
-      outPaper.data[(i*outWidth + k) * 4 + 1] = G;
-      outPaper.data[(i*outWidth + k) * 4 + 2] = B;
-      outPaper.data[(i*outWidth + k) * 4 + 3] = 255;
-   }
-}
-// 출력 캔버스에 종이 붙이기
-outCtx.putImageData(outPaper, 0, 0);
+		stmt.executeUpdate(sql);
+		
+      // 세션에 아이디 및 이미지 개수(0) 저장
+		session.setAttribute("user_id", user_id);
+		session.setAttribute("image_num", 0);
+		
+      // default 이미지 저장
+		String defalutFname = "default.png";
+		
+      // (1) 파일 처리
+		File inFp;
+		FileInputStream inFs;
+		inFp = new File("C:/eclipse-workspace/jsp_project/WebContent/upload/" + defalutFname);
+		
+		BufferedImage cImage = ImageIO.read(inFp);
+		int inW = cImage.getHeight();
+		int inH = cImage.getWidth();
+      
+		// (2) 배열 처리
+		int[][][] inImage = new int[3][inH][inW]; // 메모리 할당
+		// 파일 --> 메모리
+		for (int i=0; i<inH; i++) 
+			for (int k=0; k<inW; k++) {
+				int rgb = cImage.getRGB(i,k);
+				inImage[0][i][k] = (rgb >> 16) & 0xFF; // Red
+				inImage[1][i][k] = (rgb >> 8) & 0xFF; // Green
+				inImage[2][i][k] = (rgb ) & 0xFF; // Blue
+			}
+		
+      // (3) 알고리즘 적용
+		int[][][] outImage = new int[3][inH][inW];
+		for(int j=0; j<3; j++) 
+			for (int i=0; i<inH; i++) 
+				for (int k=0; k<inW; k++) 
+					outImage[j][i][k] = inImage[j][i][k];
+		
+		// (4) 파일 저장
+		File outFp;
+		FileOutputStream outFs;
+		String joinFname = user_id + "_out.png";
+		outFp = new File("C:/eclipse-workspace/jsp_project/WebContent/upload/" + joinFname);
+		
+		BufferedImage outCImage = new BufferedImage(inH, inW, BufferedImage.TYPE_INT_RGB);
+		
+		outFs = new FileOutputStream(outFp.getPath());
+      
+		// 메모리 --> 버퍼이미지
+		for (int i=0; i<inH; i++) 
+			for (int k=0; k<inW; k++) {
+				int r = outImage[0][i][k];
+				int g = outImage[1][i][k];
+				int b = outImage[2][i][k];
+				int px = 0;
+				px = px | (r << 16);
+				px = px | (g << 8);
+				px = px | (b);		
+				outCImage.setRGB(i,k,px);
+			}
+		
+		ImageIO.write(outCImage, "png", outFp);
+		
+		%><script> alert("가입되었습니다.");
+		window.location.href = 'login-client.jsp'; // 로그인 페이지로 이동
+		</script><%
+	}
+
+	stmt.close();
+	conn.close();
+	
+%>
 ```
-✔ **이미지 영상처리 후 출력하기**
-```Java Script
-// ** 벽돌 관련 변수 **
-// 벽돌 개수
-var brickRowCount = 8;
-var brickColumnCount = 16;
-// 벽돌 크기
-var brickWidth = inWidth/brickRowCount; // 64px
-var brickHeight = inHeight/brickColumnCount; // 32px
-// 벽돌 사이 패딩
-var brickPadding = 0;
+✔ **마이페이지에 저장한 이미지 출력**
+```java script
+<script>
+	function img_info(value) {
+		// 세션 스토리지에 있던 사용자 user_id 받아옴
+	    var user_id = sessionStorage.getItem("user_id");
+		//var user_id = "aaaa";
+		
+		// 세션에 있던 사용자 image_num 받아옴(저장할 때마다 +1: 사용자가 저장한 이미지 총 개수)
+		 var image_num = <%=session.getAttribute("image_num")%>;
+	    //var max = 2;
+	    
+	    // 이미지 경로를 넣을 문자열 생성
+	    var img_src = "";
 
-// 벽돌 배열 생성
-var bricks = [];
-for(var c=0; c<brickColumnCount; c++) {
-   bricks[c] = [];
-   for(var r=0; r<brickRowCount; r++) {
-      // 벽돌을 그릴 위치와 상태
-      bricks[c][r] = { x: 0, y: 0, status: 1 };
-   }
-}
+	    // 출력될 사용자 이미지 number = 사용자 image_num - 이미지 순서value
+        var num = image_num - value;
+        if(num > 0) // 사용자가 저장한 이미지 출력
+            img_src = 'upload/'+ user_id + '_out (' + num + ').png';
+        else // 총 출력 이미지 개수인 8개보다 사용자가 저장한 이미지 개수가 적을 경우 default.png 출력
+            img_src = 'upload/default.png';
 
-// 이미지 출력 배열 생성 후 픽셀값 저장하여 출력하기
-m = brickColumnCount;
-n = brickRowCount;
+        // 이미지 경로 반환
+		return img_src;
+	}
 
-function makeOutArray(m, n) {
-   outWidth = brickWidth;
-   outHeight = brickHeight;
-
-   // 출력 3차원 배열을 준비
-   outImageArray = new Array(3);
-   for(var j=0; j<3; j++) {
-      outImageArray[j] = new Array(outHeight);
-      for(var i=0; i<outHeight; i++) 
-        outImageArray[j][i] = new Array(outWidth);
-   }
-
-   // 출력 배열에 픽셀값 저장
-   for(var j=0; j<3; j++) {
-      for(var i=0; i<outHeight; i++) 
-        for (var k=0; k<outWidth; k++) 
-            outImageArray[j][i][k] = inImageArray[j][outHeight*m+i][outWidth*n+k];
-   }
-
-   // 이미지 출력
-   outPaper = ctx.createImageData(outWidth, outHeight);
-   var R, G, B, A;
-   for(var i=0; i<outHeight; i++) {
-      for (var k=0; k<outWidth; k++) {
-        R = outImageArray[0][i][k].charCodeAt(0);
-        G = outImageArray[1][i][k].charCodeAt(0);
-        B = outImageArray[2][i][k].charCodeAt(0);
-        outPaper.data[(i*outWidth + k) * 4 + 0] = R;
-        outPaper.data[(i*outWidth + k) * 4 + 1] = G;
-        outPaper.data[(i*outWidth + k) * 4 + 2] = B;
-        outPaper.data[(i*outWidth + k) * 4 + 3] = 255;
-      }
-   }
-}
-
-// 벽돌 위치에 맞게 이미지 출력하기
-function drawBricks() {
-   for(var c=0; c<brickColumnCount; c++) {
-      for(var r=0; r<brickRowCount; r++) {
-        // 상태: 1 그려짐
-        if(bricks[c][r].status == 1) {
-            // 벽돌 그릴 위치 조정
-            var brickX = (r*(brickWidth+brickPadding))+brickOffsetLeft;
-            var brickY = (c*(brickHeight+brickPadding))+brickOffsetTop;
-            // 벽돌 그릴 위치를 배열에 저장
-            bricks[c][r].x = brickX;
-            bricks[c][r].y = brickY;
-            // 이미지 출력
-            makeOutArray(c, r);
-            ctx.putImageData(outPaper,brickX,brickY);
-        }
-      }
-   }
-}
+</script>
 ```
+```html
+<div class='img'>
+   <img id='img0' class='img-in' src=''>
+   <script>document.getElementById('img0').src=img_info(0)</script>
+</div>
+
+```
+
