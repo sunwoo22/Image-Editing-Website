@@ -12,9 +12,9 @@ JSP를 통해 웹 브라우저와 서버, DB를 연결한 동적 웹페이지에
 ## 🛠 프로젝트 환경
 ✅ **사용 언어**: JSP / HTML5 / CSS3 / JAVASCRIPT   
 ✅ **개발 환경**: Eclipse / Visual Studio Code   
-✅ **제작 기간**: 21.03.25 – 21.03.30   
-✅ **JSP 환경 설정**: JDK 9.0.4 / Eclipse Java EE (Oxygen 2) / apache-tomcat-9.0.2   
+✅ **개발 기간**: 21.03.25 – 21.03.30   
 ✅ **데이터베이스**: MariaDB 10.5.9   
+✅ **JSP 환경 설정**: JDK 9.0.4 / Eclipse Java EE (Oxygen 2) / apache-tomcat-9.0.2   
 <br>
    
 ## 💻 화면 구성
